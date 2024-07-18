@@ -1,29 +1,16 @@
-/**
- * Import function triggers from their respective submodules:
- *
- * import {onCall} from "firebase-functions/v2/https";
- * import {onDocumentWritten} from "firebase-functions/v2/firestore";
- *
- * See a full list of supported triggers at https://firebase.google.com/docs/functions
- */
-
-import { onRequest } from "firebase-functions/v2/https";
-
-// Start writing functions
-// https://firebase.google.com/docs/functions/typescript
-
-// export const helloWorld = onRequest((request, response) => {
-//   logger.info("Hello logs!", {structuredData: true});
-//   response.send("Hello from Firebase!");
-// });
-
+import * as functions from "firebase-functions";
 import * as express from "express";
-
-import { Request, Response } from "express";
 
 const app = express();
 
-app.get("/", (req: Request, res: Response) => res.send("Hello World!"));
+const apiKey = functions.config().private?.key;
+const projectId = functions.config().project?.id;
+const clientEmail = functions.config().client?.email;
 
-
-exports.api = onRequest(app);
+app.get("/", (req, res) => {
+    console.log(`API Key: ${apiKey}`);
+    console.log(`Project ID: ${projectId}`);
+    console.log(`Client Email: ${clientEmail}`);
+    res.status(200).send("Hey there!");
+});
+exports.app = functions.https.onRequest(app);
