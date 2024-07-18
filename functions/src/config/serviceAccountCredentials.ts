@@ -6,10 +6,10 @@ const clientEmail = config().client?.email;
 const privateKey = config().private?.key;
 
 
-const admin = {
+const serviceAccountCredentials = {
     projectId,
     clientEmail,
     privateKey,
 };
 
-export { admin };
+export { serviceAccountCredentials };
