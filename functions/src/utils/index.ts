@@ -1,2 +1,2 @@
 export * from "./custom.errors";
-export * from "./handleError";
+export * from "./errorManager";
