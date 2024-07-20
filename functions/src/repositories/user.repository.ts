@@ -25,4 +25,23 @@ export class UserRepository {
             throw CustomError.internalServer(`${error}`);
         }
     }
+
+    async getUserById(userId: string) {
+        try {
+            const userCollection = db.collection("users");
+
+            const querySnapshot = userCollection
+                .where("id", "==", userId);
+
+            const userData = await querySnapshot.get();
+
+            if (userData.empty) throw CustomError.badRequest("Email not exist");
+
+            const { id, email } = userData.docs[0].data() as userInterface;
+
+            return new UserModel(id as string, email);
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`);
+        }
+    }
 }

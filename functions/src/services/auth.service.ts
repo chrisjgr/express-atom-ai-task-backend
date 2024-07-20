@@ -1,4 +1,6 @@
 /* eslint-disable require-jsdoc */
+import { JwtAdapter } from "../config";
+import { CustomError } from "../utils";
 import { UserRepository } from "./../repositories/user.repository";
 
 export class UserService {
@@ -8,10 +10,20 @@ export class UserService {
 
     async login(email: string) {
         const user = await this.UserRepository.getUserByEmail(email);
-        // TODO: Agregar el token
+
+        const token = JwtAdapter.generateToken({ id: user.getId() });
+
+        if (!token) throw CustomError.internalServer("Error while creating JWT");
+
         return {
-            token: "",
+            token,
             user: user.toJson(),
         };
+    }
+
+    async getUserById(userId: string) {
+        const user = await this.UserRepository.getUserById(userId);
+
+        return user.toJson();
     }
 }
