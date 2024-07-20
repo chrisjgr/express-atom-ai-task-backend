@@ -1,5 +1,5 @@
 import * as express from "express";
-import { config } from "firebase-functions";
+import { AppRouter } from "../router";
 
 
 const app = express();
@@ -9,16 +9,12 @@ const app = express();
 app.use(express.json());
 
 // Routes
-const apiKey = config().private?.key;
-const projectId = config().project?.id;
-const clientEmail = config().client?.email;
 
 app.get("/", (req, res) => {
-    console.log(`API Key: ${apiKey}`);
-    console.log(`Project ID: ${projectId}`);
-    console.log(`Client Email: ${clientEmail}`);
     res.status(200).send("Hey there!");
 });
 
+// * Adding routes
+app.use(AppRouter.routes);
 
 export { app };

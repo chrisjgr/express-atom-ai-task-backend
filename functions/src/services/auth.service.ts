@@ -1,5 +1,6 @@
 /* eslint-disable require-jsdoc */
 import { JwtAdapter } from "../config";
+import { LoginUserDto } from "../dtos/login-user.dto";
 import { CustomError } from "../utils";
 import { UserRepository } from "./../repositories/user.repository";
 
@@ -8,8 +9,8 @@ export class UserService {
         private UserRepository: UserRepository,
     ) { }
 
-    async login(email: string) {
-        const user = await this.UserRepository.getUserByEmail(email);
+    async login(loginDto: LoginUserDto) {
+        const user = await this.UserRepository.getUserByEmail(loginDto.email);
 
         const token = JwtAdapter.generateToken({ id: user.getId() });
 

@@ -26,6 +26,7 @@ export class UserRepository {
         }
     }
 
+
     async getUserById(userId: string) {
         try {
             const userCollection = db.collection("users");
