@@ -8,7 +8,7 @@ import { UserModel } from "../models";
 import { firebaseCollection, userRol } from "../enums";
 
 export class UserRepository {
-    public async getUserByEmail(email: string) {
+    async getUserByEmail(email: string) {
         try {
             const userCollection = db.collection("users");
 
@@ -37,11 +37,11 @@ export class UserRepository {
 
             const userData = await querySnapshot.get();
 
-            if (userData.empty) throw CustomError.badRequest("Email not exist");
+            if (userData.empty) throw CustomError.badRequest("User not exist");
 
             const { id, email, rol } = userData.docs[0].data() as userInterface;
 
-            return new UserModel(email, rol, id as string, );
+            return new UserModel(email, rol, id as string,);
         } catch (error) {
             throw CustomError.internalServer(`${error}`);
         }

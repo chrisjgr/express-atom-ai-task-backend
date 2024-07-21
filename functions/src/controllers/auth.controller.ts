@@ -1,9 +1,8 @@
 /* eslint-disable require-jsdoc */
 import { Request, Response } from "express";
 import { UserService } from "../services";
-import { LoginUserDto } from "../dtos/login-user.dto";
+import { LoginUserDto, RegisterUserDto } from "../dtos";
 import { ErrorManager } from "../utils";
-import { RegisterUserDto } from "../dtos";
 
 export class AuthController {
     constructor(
@@ -16,7 +15,7 @@ export class AuthController {
         if (error) return res.status(400).json({ error });
 
         this.userService.login(loginUserDto as LoginUserDto)
-            .then((user) => res.json(user))
+            .then((user) => res.status(200).json(user))
             .catch((error) => ErrorManager.handleError(error, res));
 
         return;
@@ -27,7 +26,7 @@ export class AuthController {
         if (error) return res.status(400).json({ error });
 
         this.userService.register(registerUserDto as RegisterUserDto)
-            .then((user) => res.json(user))
+            .then((user) => res.status(201).json(user))
             .catch((error) => ErrorManager.handleError(error, res));
 
         return;

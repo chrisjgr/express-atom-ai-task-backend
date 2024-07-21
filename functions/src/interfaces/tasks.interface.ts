@@ -1,10 +1,10 @@
 export interface TaskInterface {
-    id: string,
+    id?: string,
     title: string,
     description: string,
     creation_date: Date,
     isCompleted: boolean,
     isImportant: boolean,
-    listId: string,
+    listId?: string,
     userId: string
 }
