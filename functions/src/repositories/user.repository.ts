@@ -1,11 +1,11 @@
 /* eslint-disable require-jsdoc */
 
-import { RolInterface, userInterface } from "./../interfaces/user.interface";
+import { RolInterface, userInterface } from "../interfaces/user.interface";
 
 import { db } from "../config";
 import { CustomError } from "../utils";
 import { UserModel } from "../models";
-import { firebaseCollection, userRol } from "../utils/enums";
+import { firebaseCollection, userRol } from "../enums";
 
 export class UserRepository {
     public async getUserByEmail(email: string) {

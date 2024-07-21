@@ -3,7 +3,7 @@ import { JwtAdapter } from "../config";
 import { LoginUserDto } from "../dtos/login-user.dto";
 import { RegisterUserDto } from "../dtos/register-user.dto";
 import { CustomError } from "../utils";
-import { userRol } from "../utils/enums";
+import { userRol } from "../enums";
 import { UserRepository } from "./../repositories/user.repository";
 
 export class UserService {

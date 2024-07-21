@@ -1,5 +1,5 @@
 import { userInterface } from "../interfaces";
-import { userRol } from "../utils/enums";
+import { userRol } from "../enums";
 
 /* eslint-disable require-jsdoc */
 export class UserModel {

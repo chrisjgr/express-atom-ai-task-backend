@@ -1,4 +1,4 @@
-import { userRol } from "../utils/enums";
+import { userRol } from "../enums";
 
 export interface userInterface {
     id?: string;

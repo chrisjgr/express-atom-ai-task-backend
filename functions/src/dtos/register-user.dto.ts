@@ -1,7 +1,7 @@
 /* eslint-disable require-jsdoc */
 
 import { regularExps } from "../config/regular-exp";
-import { userRol } from "../utils/enums";
+import { userRol } from "../enums";
 
 export class RegisterUserDto {
     private constructor(
