@@ -18,6 +18,7 @@ export class AuthRoutes {
 
         //* Routes
         router.post("/login", controller.loginUser.bind(controller));
+        router.post("/register", controller.registerUser.bind(controller));
 
         return router;
     }

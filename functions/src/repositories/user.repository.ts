@@ -1,10 +1,11 @@
 /* eslint-disable require-jsdoc */
 
-import { userInterface } from "./../interfaces/user.interface";
+import { RolInterface, userInterface } from "./../interfaces/user.interface";
 
 import { db } from "../config";
 import { CustomError } from "../utils";
 import { UserModel } from "../models";
+import { firebaseCollection, userRol } from "../utils/enums";
 
 export class UserRepository {
     public async getUserByEmail(email: string) {
@@ -18,9 +19,9 @@ export class UserRepository {
 
             if (userData.empty) throw CustomError.badRequest("Email not exist");
 
-            const { email: userEmail, id } = userData.docs[0].data() as userInterface;
+            const { email: userEmail, id, rol } = userData.docs[0].data() as userInterface;
 
-            return new UserModel(id as string, userEmail);
+            return new UserModel(userEmail, rol, id as string);
         } catch (error) {
             throw CustomError.internalServer(`${error}`);
         }
@@ -29,7 +30,7 @@ export class UserRepository {
 
     async getUserById(userId: string) {
         try {
-            const userCollection = db.collection("users");
+            const userCollection = db.collection(firebaseCollection.users);
 
             const querySnapshot = userCollection
                 .where("id", "==", userId);
@@ -38,9 +39,34 @@ export class UserRepository {
 
             if (userData.empty) throw CustomError.badRequest("Email not exist");
 
-            const { id, email } = userData.docs[0].data() as userInterface;
+            const { id, email, rol } = userData.docs[0].data() as userInterface;
 
-            return new UserModel(id as string, email);
+            return new UserModel(email, rol, id as string, );
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`);
+        }
+    }
+
+    async createUser(email: string, rol: userRol) {
+        try {
+            const user = await this.getUserByEmail(email);
+            if (user) throw CustomError.badRequest("Email already exist");
+
+            const userCollection = db.collection(firebaseCollection.users);
+            const rolCollection = db.collection(firebaseCollection.rol);
+
+            const rolQuerySnapshot = rolCollection.where("title", "==", rol);
+            const rolData = await rolQuerySnapshot.get();
+            if (rolData.empty) throw CustomError.badRequest("Rol not exist");
+
+            const userRol = rolData.docs[0].data() as RolInterface;
+
+            const userDoc = userCollection.doc();
+            const newUser = new UserModel(email, userRol.title, userDoc.id);
+
+            await userDoc.set(newUser.toJson());
+
+            return newUser;
         } catch (error) {
             throw CustomError.internalServer(`${error}`);
         }
