@@ -7,7 +7,7 @@ import { ListInterface } from "../interfaces";
 import { ListModel } from "../models";
 
 
-export class ListRepository {
+class ListRepository {
     private listCollection = db.collection(firebaseCollection.list);
 
     async getAllListByUser(userId: string) {
@@ -69,12 +69,11 @@ export class ListRepository {
 
             const newList = {
                 title: title || listData.title,
-                userId: listData.userId,
             };
 
             await querySnapshot.update(newList);
 
-            return new ListModel(newList.title, newList.userId, listId);
+            return new ListModel(newList.title, listData.userId, listId);
         } catch (error) {
             throw CustomError.internalServer(`${error}`);
         }
@@ -94,3 +93,5 @@ export class ListRepository {
         }
     }
 }
+
+export const ListRepositoryInstance = new ListRepository();

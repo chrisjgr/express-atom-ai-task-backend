@@ -3,22 +3,21 @@
 
 
 import { Router } from "express";
-import { ListRepository } from "../repositories";
-import { ListService } from "../services";
-import { ListController } from "../controllers";
+import { ListControllerInstance } from "../controllers";
 import { AuthMiddleware } from "../middlewares/auth.middleware";
 
 export class ListRoutes {
     static get routes(): Router {
         const router = Router();
 
-        const listRepository = new ListRepository();
-        const listService = new ListService(listRepository);
-        const controller = new ListController(listService);
+        const controller = ListControllerInstance;
 
         //* Routes
-        router.get("/", [AuthMiddleware.validateJWT], controller.getList);
-
+        router.get("/:id", [AuthMiddleware.validateJWT], controller.getList);
+        router.get("/user/:userId", [AuthMiddleware.validateJWT], controller.getListByUser);
+        router.delete("/:id", [AuthMiddleware.validateJWT], controller.deleteList);
+        router.post("/", [AuthMiddleware.validateJWT], controller.createList);
+        router.put("/:id", [AuthMiddleware.validateJWT], controller.updateList);
 
         return router;
     }

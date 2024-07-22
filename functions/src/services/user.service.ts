@@ -3,17 +3,13 @@ import { JwtAdapter } from "../config";
 import { LoginUserDto, RegisterUserDto } from "../dtos";
 import { CustomError } from "../utils";
 import { userRol } from "../enums";
-import { UserRepository } from "./../repositories";
+import { AuthRepositoryInstance } from "../repositories";
 
-export class UserService {
-    constructor(
-        private UserRepository: UserRepository,
-    ) { }
-
+class UserService {
     async login(loginDto: LoginUserDto) {
-        const user = await this.UserRepository.getUserByEmail(loginDto.email);
+        const user = await AuthRepositoryInstance.getUserByEmail(loginDto.email);
 
-        const token = JwtAdapter.generateToken({ id: user.getId() }, loginDto.duration);
+        const token = await JwtAdapter.generateToken({ id: user.getId() }, loginDto.duration);
 
         if (!token) throw CustomError.internalServer("Error while creating JWT");
 
@@ -24,15 +20,15 @@ export class UserService {
     }
 
     async getUserById(userId: string) {
-        const user = await this.UserRepository.getUserById(userId);
+        const user = await AuthRepositoryInstance.getUserById(userId);
 
         return user.toJson();
     }
 
     async register(registerParams: RegisterUserDto) {
-        const user = await this.UserRepository.createUser(registerParams.email, registerParams.rol as userRol);
+        const user = await AuthRepositoryInstance.createUser(registerParams.email, registerParams.rol as userRol);
 
-        const token = JwtAdapter.generateToken({ id: user.getId() });
+        const token = await JwtAdapter.generateToken({ id: user.getId() });
 
         if (!token) throw CustomError.internalServer("Error while creating JWT");
 
@@ -42,3 +38,5 @@ export class UserService {
         };
     }
 }
+
+export const AuthServiceInstance = new UserService();

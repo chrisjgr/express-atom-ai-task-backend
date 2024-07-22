@@ -49,14 +49,22 @@ export class UserRepository {
 
     async createUser(email: string, rol: userRol) {
         try {
-            const user = await this.getUserByEmail(email);
-            if (user) throw CustomError.badRequest("Email already exist");
+            const user = await db.collection(firebaseCollection.users).where("email", "==", email).get();
+
+            console.log({ user: user.docs[0] });
+
+
+            if (!user.empty) throw CustomError.badRequest("Email already exist");
 
             const userCollection = db.collection(firebaseCollection.users);
             const rolCollection = db.collection(firebaseCollection.rol);
 
             const rolQuerySnapshot = rolCollection.where("title", "==", rol);
             const rolData = await rolQuerySnapshot.get();
+
+            console.log({ rol: rol });
+
+
             if (rolData.empty) throw CustomError.badRequest("Rol not exist");
 
             const userRol = rolData.docs[0].data() as RolInterface;
@@ -72,3 +80,5 @@ export class UserRepository {
         }
     }
 }
+
+export const AuthRepositoryInstance = new UserRepository();
