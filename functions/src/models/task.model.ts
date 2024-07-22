@@ -11,7 +11,7 @@ type TaskModelParams = {
     isCompleted?: boolean;
     isImportant?: boolean;
     id?: string;
-    listId?: string;
+    listId: string | null;
 }
 
 export class TaskModel {
@@ -20,7 +20,7 @@ export class TaskModel {
     private description: string;
     private creationDate: Date;
     private userId: string;
-    private listId: string;
+    private listId: string | null;
     private isCompleted: boolean;
     private isImportant: boolean;
 
@@ -110,7 +110,7 @@ export class TaskModel {
             userId: this.userId,
             isCompleted: this.isCompleted,
             isImportant: this.isImportant,
-            listId: this.listId != "" ? this.listId : undefined,
+            listId: this.listId || null,
         };
     }
 }

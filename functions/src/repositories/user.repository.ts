@@ -9,42 +9,34 @@ import { firebaseCollection, userRol } from "../enums";
 
 export class UserRepository {
     async getUserByEmail(email: string) {
-        try {
-            const userCollection = db.collection("users");
+        const userCollection = db.collection("users");
 
-            const querySnapshot = userCollection
-                .where("email", "==", email);
+        const querySnapshot = userCollection
+            .where("email", "==", email);
 
-            const userData = await querySnapshot.get();
+        const userData = await querySnapshot.get();
 
-            if (userData.empty) throw CustomError.badRequest("Email not exist");
+        if (userData.empty) throw CustomError.badRequest("Email not exist");
 
-            const { email: userEmail, id, rol } = userData.docs[0].data() as userInterface;
+        const { email: userEmail, id, rol } = userData.docs[0].data() as userInterface;
 
-            return new UserModel(userEmail, rol, id as string);
-        } catch (error) {
-            throw CustomError.internalServer(`${error}`);
-        }
+        return new UserModel(userEmail, rol, id as string);
     }
 
 
     async getUserById(userId: string) {
-        try {
-            const userCollection = db.collection(firebaseCollection.users);
+        const userCollection = db.collection(firebaseCollection.users);
 
-            const querySnapshot = userCollection
-                .where("id", "==", userId);
+        const querySnapshot = userCollection
+            .where("id", "==", userId);
 
-            const userData = await querySnapshot.get();
+        const userData = await querySnapshot.get();
 
-            if (userData.empty) throw CustomError.badRequest("User not exist");
+        if (userData.empty) throw CustomError.badRequest("User not exist");
 
-            const { id, email, rol } = userData.docs[0].data() as userInterface;
+        const { id, email, rol } = userData.docs[0].data() as userInterface;
 
-            return new UserModel(email, rol, id as string,);
-        } catch (error) {
-            throw CustomError.internalServer(`${error}`);
-        }
+        return new UserModel(email, rol, id as string,);
     }
 
     async createUser(email: string, rol: userRol) {

@@ -28,6 +28,7 @@ class TaskRepository {
                 listId,
                 userId,
                 creationDate: new Date(),
+                id: taskDoc.id,
             });
 
             await taskDoc.create(newTask.toJson());
@@ -39,36 +40,28 @@ class TaskRepository {
     }
 
     async getAllTasksByUserId(userId: string) {
-        try {
-            const querySnapshot = this.taskCollection
-                .where("userId", "==", userId);
+        const querySnapshot = this.taskCollection
+            .where("userId", "==", userId);
 
-            const taskData = await querySnapshot.get();
+        const taskData = await querySnapshot.get();
 
-            if (taskData.empty) throw CustomError.badRequest("This user doesn't have any task");
+        if (taskData.empty) throw CustomError.notFound("This user doesn't have any task");
 
-            const tasks = taskData.docs.map((doc) => doc.data()) as TaskInterface[];
+        const tasks = taskData.docs.map((doc) => doc.data()) as TaskInterface[];
 
-            return tasks.map((task) => this.mapTaskToModel(task));
-        } catch (error) {
-            throw CustomError.internalServer(`${error}`);
-        }
+        return tasks.map((task) => this.mapTaskToModel(task));
     }
 
     async getTaskById(taskId: string) {
-        try {
-            const querySnapshot = this.taskCollection.doc(taskId);
+        const querySnapshot = this.taskCollection.doc(taskId);
 
-            const taskData = await querySnapshot.get();
+        const taskData = await querySnapshot.get();
 
-            if (!taskData.exists) throw CustomError.badRequest("This task doesn't exist");
+        if (!taskData.exists) throw CustomError.notFound("This task doesn't exist");
 
-            const task = taskData.data() as TaskInterface;
+        const task = taskData.data() as TaskInterface;
 
-            return this.mapTaskToModel(task);
-        } catch (error) {
-            throw CustomError.internalServer(`${error}`);
-        }
+        return this.mapTaskToModel(task);
     }
 
     async updateTask(taskId: string, taskUpdateParams: updateTaskParams) {
@@ -79,7 +72,7 @@ class TaskRepository {
 
             const taskDoc = await querySnapshot.get();
 
-            if (!taskDoc.exists) throw CustomError.badRequest("This task doesn't exist");
+            if (!taskDoc.exists) throw CustomError.notFound("This task doesn't exist");
 
             const taskData = taskDoc.data() as TaskInterface;
 
@@ -114,19 +107,15 @@ class TaskRepository {
     }
 
     async getTaskByListId(listId: string) {
-        try {
-            const querySnapshot = this.taskCollection.where("listId", "==", listId);
+        const querySnapshot = this.taskCollection.where("listId", "==", listId);
 
-            const taskData = await querySnapshot.get();
+        const taskData = await querySnapshot.get();
 
-            if (taskData.empty) throw CustomError.badRequest("Task doesn't exist wit this listId");
+        if (taskData.empty) throw CustomError.notFound("Tasks doesn't exist wit this listId");
 
-            const tasks = taskData.docs.map((doc) => doc.data()) as TaskInterface[];
+        const tasks = taskData.docs.map((doc) => doc.data()) as TaskInterface[];
 
-            return tasks.map((task) => this.mapTaskToModel(task));
-        } catch (error) {
-            throw CustomError.internalServer(`${error}`);
-        }
+        return tasks.map((task) => this.mapTaskToModel(task));
     }
 
     private mapTaskToModel(tasks: TaskInterface) {
@@ -138,7 +127,7 @@ class TaskRepository {
             userId: tasks.userId,
             isCompleted: tasks.isCompleted,
             isImportant: tasks.isImportant,
-            listId: tasks.listId !== undefined ? tasks.listId : undefined,
+            listId: tasks.listId || null,
         });
     }
 }

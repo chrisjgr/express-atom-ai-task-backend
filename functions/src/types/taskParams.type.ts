@@ -3,7 +3,7 @@ export type createTaskParams = {
     description: string;
     isCompleted: boolean;
     isImportant: boolean;
-    listId?: string;
+    listId: string | null;
     userId: string;
 };
 

@@ -10,7 +10,7 @@ export class GetTaskByListIdDto {
         } = object;
 
 
-        if (!listId) return ["Missing listId"];
+        if (!listId || listId === "") return ["Missing listId"];
 
         if (typeof listId !== "string") return ["listId is not valid, must be a string"];
 

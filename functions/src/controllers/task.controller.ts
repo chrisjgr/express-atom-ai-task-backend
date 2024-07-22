@@ -44,7 +44,9 @@ export class TaskController {
 
         if (error) return res.status(400).json({ error });
 
-        TaskServiceInstance.getTaskById(getTaskByIdDto as GetTaskByIdDto);
+        TaskServiceInstance.getTaskById(getTaskByIdDto as GetTaskByIdDto)
+            .then((tasks) => res.status(200).json(tasks))
+            .catch((error) => ErrorManager.handleError(error, res));
 
         return;
     }
@@ -56,7 +58,9 @@ export class TaskController {
 
         TaskServiceInstance.getTaskByListId(getTaskByListId as GetTaskByListIdDto)
             .then((tasks) => res.status(200).json(tasks))
-            .catch((error) => ErrorManager.handleError(error, res));
+            .catch((error) => {
+                return ErrorManager.handleError(error, res);
+            });
 
         return;
     }

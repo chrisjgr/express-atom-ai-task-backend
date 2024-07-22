@@ -10,7 +10,6 @@ class UserService {
         const user = await AuthRepositoryInstance.getUserByEmail(loginDto.email);
 
         const token = await JwtAdapter.generateToken({ id: user.getId() }, loginDto.duration);
-
         if (!token) throw CustomError.internalServer("Error while creating JWT");
 
         return {
@@ -28,8 +27,7 @@ class UserService {
     async register(registerParams: RegisterUserDto) {
         const user = await AuthRepositoryInstance.createUser(registerParams.email, registerParams.rol as userRol);
 
-        const token = await JwtAdapter.generateToken({ id: user.getId() });
-
+        const token = await JwtAdapter.generateToken({ id: user.getId() }, "7d");
         if (!token) throw CustomError.internalServer("Error while creating JWT");
 
         return {

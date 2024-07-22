@@ -5,8 +5,8 @@ export class UpdateTaskDto {
         public description: string,
         public isCompleted: boolean,
         public isImportant: boolean,
-        public listId: string,
         public id: string,
+        public listId?: string,
     ) { }
 
     static create(object: { [key: string]: any }): [string?, UpdateTaskDto?] {
@@ -15,9 +15,11 @@ export class UpdateTaskDto {
             description,
             isCompleted,
             isImportant,
-            listId,
+            listId = null,
             id,
         } = object;
+
+        if (!id || id === "") return ["Missing id"];
 
         if (title !== undefined && typeof title !== "string") return ["title is not valid, must be a string"];
         if (
@@ -32,17 +34,15 @@ export class UpdateTaskDto {
             isImportant !== undefined && typeof isImportant !== "boolean"
         ) return ["isImportant is not valid, must be a boolean"];
 
-        if (listId !== undefined && typeof listId !== "string") return ["listId is not valid, must be a string"];
-        if (id !== undefined && typeof id !== "string") return ["id is not valid, must be a string"];
-
+        if (typeof id !== "string") return ["id is not valid, must be a string"];
 
         return [undefined, new UpdateTaskDto(
             title,
             description,
             isCompleted,
             isImportant,
-            listId,
-            id
+            id,
+            listId
         )];
     }
 }

@@ -5,6 +5,6 @@ export interface TaskInterface {
     creation_date: Date,
     isCompleted: boolean,
     isImportant: boolean,
-    listId?: string,
+    listId: string | null,
     userId: string
 }

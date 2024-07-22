@@ -9,8 +9,7 @@ export class GetAllTaskByUserIdDto {
             userId,
         } = object;
 
-
-        if (!userId) return ["Missing userId"];
+        if (!userId || userId === "") return ["Missing userId"];
 
         if (typeof userId !== "string") return ["userId is not valid, must be a string"];
 

@@ -21,8 +21,8 @@ class ListService {
 
         return listModel.toJson();
     }
-    async updateList({ listId, title }: UpdateListDto) {
-        const listModel = await ListRepositoryInstance.updateList(listId, title);
+    async updateList({ id, title }: UpdateListDto) {
+        const listModel = await ListRepositoryInstance.updateList(id, title);
 
         return listModel.toJson();
     }

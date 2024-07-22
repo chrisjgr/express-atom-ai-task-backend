@@ -5,7 +5,7 @@ import { regularExps } from "../../config/regular-exp";
 export class LoginUserDto {
     private constructor(
         public email: string,
-        public duration: string,
+        public duration?: string,
     ) { }
 
     static create(object: { [key: string]: any }): [string?, LoginUserDto?] {

@@ -10,7 +10,7 @@ export class GetTaskByIdDto {
         } = object;
 
 
-        if (!id) return ["Missing id"];
+        if (!id || id === "") return ["Missing id"];
 
         if (typeof id !== "string") return ["id is not valid, must be a string"];
 

@@ -13,11 +13,11 @@ export class ListRoutes {
         const controller = ListControllerInstance;
 
         //* Routes
+        router.post("/", [AuthMiddleware.validateJWT], controller.createList);
+        router.put("/:id", [AuthMiddleware.validateJWT], controller.updateList);
         router.get("/:id", [AuthMiddleware.validateJWT], controller.getList);
         router.get("/user/:userId", [AuthMiddleware.validateJWT], controller.getListByUser);
         router.delete("/:id", [AuthMiddleware.validateJWT], controller.deleteList);
-        router.post("/", [AuthMiddleware.validateJWT], controller.createList);
-        router.put("/:id", [AuthMiddleware.validateJWT], controller.updateList);
 
         return router;
     }

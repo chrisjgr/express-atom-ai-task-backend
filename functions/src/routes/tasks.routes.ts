@@ -13,12 +13,12 @@ export class TaskRoutes {
 
 
         //* Routes
-        router.get("/:id", [AuthMiddleware.validateJWT], controller.getTaskById);
-        router.get("/list/:listId", [AuthMiddleware.validateJWT], controller.getTasksByList);
         router.post("/", [AuthMiddleware.validateJWT], controller.createTask);
         router.put("/:id", [AuthMiddleware.validateJWT], controller.updateTask);
-        router.delete("/:id", [AuthMiddleware.validateJWT], controller.deleteTask);
+        router.get("/:id", [AuthMiddleware.validateJWT], controller.getTaskById);
         router.get("/user/:userId", [AuthMiddleware.validateJWT], controller.getAllUserTask);
+        router.delete("/:id", [AuthMiddleware.validateJWT], controller.deleteTask);
+        router.get("/list/:listId", [AuthMiddleware.validateJWT], controller.getTasksByList);
 
         return router;
     }

@@ -30,7 +30,9 @@ class ListController {
     }
 
     getListByUser(req: Request, res: Response) {
-        const [error, getListsByUserIdDto] = GetListsByUserIdDto.create({ userId: req.query.userId });
+        console.log({ userId: req.params.userId });
+
+        const [error, getListsByUserIdDto] = GetListsByUserIdDto.create({ userId: req.params.userId });
         if (error) return res.status(400).json({ error });
 
         ListServiceInstance.getAllListByUser(getListsByUserIdDto as GetListsByUserIdDto)
