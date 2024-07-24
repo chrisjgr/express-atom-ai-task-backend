@@ -16,7 +16,7 @@ export class UserRepository {
 
         const userData = await querySnapshot.get();
 
-        if (userData.empty) throw CustomError.badRequest("Email not exist");
+        if (userData.empty) throw CustomError.unauthorized("We can't found this email");
 
         const { email: userEmail, id, rol } = userData.docs[0].data() as userInterface;
 

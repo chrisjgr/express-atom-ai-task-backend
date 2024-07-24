@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { AuthServiceInstance } from "../services";
 import { LoginUserDto, RegisterUserDto } from "../dtos";
 import { ErrorManager } from "../utils";
+import { HasUserDto } from "../dtos/auth/has-user.dto";
 
 class UserController {
     loginUser(req: Request, res: Response) {
@@ -25,6 +26,10 @@ class UserController {
             .catch((error) => ErrorManager.handleError(error, res));
 
         return;
+    }
+
+    hasUser(req: Request, res: Response) {
+        res.status(200).json(req.body?.user);
     }
 }
 

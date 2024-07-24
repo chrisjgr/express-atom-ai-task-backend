@@ -2,6 +2,7 @@
 /* eslint-disable require-jsdoc */
 import { Router } from "express";
 import { AuthControllerInstance } from "../controllers";
+import { AuthMiddleware } from "../middlewares/auth.middleware";
 
 export class AuthRoutes {
     static get routes(): Router {
@@ -13,6 +14,7 @@ export class AuthRoutes {
         //* Routes
         router.post("/login", controller.loginUser);
         router.post("/register", controller.registerUser);
+        router.get("/has-user", [AuthMiddleware.validateJWT], controller.hasUser);
 
         return router;
     }

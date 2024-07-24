@@ -1,6 +1,6 @@
 /* eslint-disable require-jsdoc */
 import { JwtAdapter } from "../config";
-import { LoginUserDto, RegisterUserDto } from "../dtos";
+import { LoginUserDto, RegisterUserDto, HasUserDto } from "../dtos";
 import { CustomError } from "../utils";
 import { userRol } from "../enums";
 import { AuthRepositoryInstance } from "../repositories";
@@ -18,8 +18,8 @@ class UserService {
         };
     }
 
-    async getUserById(userId: string) {
-        const user = await AuthRepositoryInstance.getUserById(userId);
+    async getUserById(params: HasUserDto) {
+        const user = await AuthRepositoryInstance.getUserById(params.user);
 
         return user.toJson();
     }
